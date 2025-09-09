@@ -53,7 +53,7 @@ export default function ContactUsPage() {
                                <MapPin className="h-6 w-6 text-primary mt-1" />
                                <div>
                                    <p className="font-semibold">Thunder Learner HQ</p>
-                                   <p className="text-muted-foreground">123 Skill Swap Street</p>
+                                   <p className="text-muted-foreground">Kolkata</p>
                                    <p className="text-muted-foreground">San Francisco, CA 94103</p>
                                </div>
                            </div>
