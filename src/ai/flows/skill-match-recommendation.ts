@@ -1,7 +1,7 @@
 'use server';
 
 /**
- * @fileOverview An AI agent for recommending skill matches based on user profiles and community demand.
+ * @fileOverview An AI agent for recommending skill matches based on user profiles and a desired skill.
  *
  * - skillMatchRecommendation - A function that handles the skill match recommendation process.
  * - SkillMatchRecommendationInput - The input type for the skillMatchRecommendation function.
@@ -12,20 +12,27 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SkillMatchRecommendationInputSchema = z.object({
-  userProfile: z
+  skill: z.string().describe('The skill the user wants to learn.'),
+  communityProfiles: z
     .string()
-    .describe('The user profile including skills offered, skills wanted, location, and points.'),
-  communityDemand: z
-    .string()
-    .describe('Information about the current demand for different skills in the community.'),
+    .describe('A JSON string of all user profiles in the community.'),
 });
 export type SkillMatchRecommendationInput = z.infer<
   typeof SkillMatchRecommendationInputSchema
 >;
 
+const RecommendedUserSchema = z.object({
+  name: z.string().describe('The name of the recommended user.'),
+  location: z.string().describe('The location of the recommended user.'),
+  skillsOffered: z.array(z.string()).describe('The skills offered by the recommended user.'),
+  rationale: z
+    .string()
+    .describe('The rationale for why this user is a good match.'),
+});
+
 const SkillMatchRecommendationOutputSchema = z.object({
   recommendedMatches: z
-    .string()
+    .array(RecommendedUserSchema)
     .describe(
       'A list of recommended skill matches, including the user profiles of potential partners and the rationale for the match.'
     ),
@@ -44,19 +51,17 @@ const prompt = ai.definePrompt({
   name: 'skillMatchRecommendationPrompt',
   input: {schema: SkillMatchRecommendationInputSchema},
   output: {schema: SkillMatchRecommendationOutputSchema},
-  prompt: `You are an AI assistant designed to recommend skill matches between users in a community skill exchange platform.
+  prompt: `You are an AI assistant designed to recommend skill matches in a community skill exchange platform.
 
-  Based on the user's profile and the current community demand, identify the most optimal skill exchange partners for the user.
+  A user wants to learn the following skill: '{{skill}}'.
 
-  User Profile:
-  {{userProfile}}
+  Based on the list of community user profiles provided below, identify users who offer this skill.
 
-  Community Demand:
-  {{communityDemand}}
+  Community Profiles (JSON):
+  {{communityProfiles}}
 
-  Provide a list of recommended matches, including the user profiles of potential partners and a brief explanation of why each match is recommended.
-  Format the output as a JSON array of objects with 'userProfile' and 'rationale' fields.
-  `, // Ensure correct Handlebars syntax
+  Analyze the profiles and provide a list of recommended matches. For each match, include a brief, friendly, and encouraging explanation of why they are a good fit. For example, mention their other related skills or simply state they are a great person to learn from.
+  `,
 });
 
 const skillMatchRecommendationFlow = ai.defineFlow(

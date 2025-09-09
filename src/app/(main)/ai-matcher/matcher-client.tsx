@@ -3,13 +3,19 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { skillMatchRecommendation } from '@/ai/flows/skill-match-recommendation';
-import { getCurrentUser, users, skills } from '@/lib/data';
-import { Bot, Sparkles, UserCheck } from 'lucide-react';
+import { users, skills } from '@/lib/data';
+import { Bot, Sparkles, UserCheck, MapPin } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { SkillIcon } from '@/components/skill-icon';
+import { Label } from '@/components/ui/label';
 
 type Match = {
-  userProfile: string;
+  name: string;
+  location: string;
+  skillsOffered: string[];
   rationale: string;
 };
 
@@ -17,34 +23,39 @@ export function MatcherClient() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
+  const [skillToLearn, setSkillToLearn] = useState('');
 
-  const currentUser = getCurrentUser();
-
-  const getSkillNames = (skillIds: string[]) => 
-    skillIds.map(id => skills.find(s => s.id === id)?.name || id).join(', ');
+  const getSkillId = (skillName: string) => {
+    return skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())?.id || 'unknown'
+  }
 
   const handleGenerateMatches = async () => {
+    if (!skillToLearn) {
+      setError('Please enter a skill you want to learn.');
+      return;
+    }
     setLoading(true);
     setError(null);
     setMatches([]);
 
     try {
-      const userProfile = `User: ${currentUser.name}, Location: ${currentUser.location.name}, Skills Offered: ${getSkillNames(currentUser.skillsOffered)}, Skills Wanted: ${getSkillNames(currentUser.skillsWanted)}.`;
-      
-      const communityDemand = users
-        .filter(u => u.id !== currentUser.id)
-        .map(u => `User ${u.name} wants: ${getSkillNames(u.skillsWanted)}.`)
-        .join(' ');
+      // Filter out the current user and prepare the data for the AI
+      const communityProfiles = users.map(u => ({
+        name: u.name,
+        location: u.location.name,
+        skillsOffered: u.skillsOffered.map(id => skills.find(s => s.id === id)?.name || id),
+      }));
 
-      const result = await skillMatchRecommendation({ userProfile, communityDemand });
-      
-      // The AI returns a string that needs to be parsed into a JSON object.
-      const parsedMatches = JSON.parse(result.recommendedMatches);
-      setMatches(parsedMatches);
+      const result = await skillMatchRecommendation({
+        skill: skillToLearn,
+        communityProfiles: JSON.stringify(communityProfiles),
+      });
+
+      setMatches(result.recommendedMatches);
 
     } catch (e: any) {
       console.error(e);
-      setError('Failed to get recommendations. Please try again.');
+      setError('Failed to get recommendations. The AI might be busy, please try again.');
     } finally {
       setLoading(false);
     }
@@ -56,21 +67,30 @@ export function MatcherClient() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bot />
-            Your AI Match Request
+            Find Your Teacher
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">Click the button below to generate personalized skill swap recommendations based on your profile.</p>
-          <Button onClick={handleGenerateMatches} disabled={loading}>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="skill-input">What skill do you want to learn?</Label>
+            <Input
+              id="skill-input"
+              placeholder="e.g., Cooking, Guitar, Coding..."
+              value={skillToLearn}
+              onChange={(e) => setSkillToLearn(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <Button onClick={handleGenerateMatches} disabled={loading || !skillToLearn}>
             {loading ? (
               <>
                 <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-                Generating...
+                Searching...
               </>
             ) : (
               <>
                 <Sparkles className="mr-2 h-4 w-4" />
-                Generate My Matches
+                Find Matches
               </>
             )}
           </Button>
@@ -92,9 +112,13 @@ export function MatcherClient() {
               <CardHeader>
                 <Skeleton className="h-6 w-1/3" />
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
                 <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3 mt-2" />
+                <Skeleton className="h-4 w-2/3" />
+                <div className="flex flex-wrap gap-2">
+                    <Skeleton className="h-6 w-20" />
+                    <Skeleton className="h-6 w-24" />
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -103,20 +127,36 @@ export function MatcherClient() {
 
       {matches.length > 0 && (
         <div className="mt-6 space-y-4">
-          <h3 className="text-2xl font-bold tracking-tight">AI Recommendations</h3>
+          <h3 className="text-2xl font-bold tracking-tight">AI Recommendations for learning "{skillToLearn}"</h3>
           {matches.map((match, index) => (
             <Card key={index} className="bg-secondary/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <UserCheck className="text-primary" />
-                  Match Recommendation
+                <CardTitle className="flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                        <UserCheck className="text-primary" />
+                        {match.name}
+                    </span>
+                    <span className="text-sm font-normal text-muted-foreground flex items-center gap-1.5">
+                        <MapPin className="h-4 w-4" />
+                        {match.location}
+                    </span>
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="font-semibold">{match.userProfile}</p>
-                <blockquote className="mt-2 border-l-2 pl-3 text-sm italic text-muted-foreground">
+              <CardContent className="space-y-3">
+                 <blockquote className="border-l-2 pl-3 text-sm italic text-muted-foreground">
                   {match.rationale}
                 </blockquote>
+                <div>
+                  <h4 className="font-semibold text-xs mb-2">Also offers:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {match.skillsOffered.map(skillName => (
+                      <Badge key={skillName} variant={skillName.toLowerCase() === skillToLearn.toLowerCase() ? "default" : "outline"} className="flex items-center gap-1.5">
+                        <SkillIcon skillId={getSkillId(skillName)} className="h-3 w-3" />
+                        {skillName}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           ))}
