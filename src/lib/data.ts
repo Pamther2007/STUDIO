@@ -35,11 +35,11 @@ export const users: User[] = [
   },
   {
     id: 2,
-    name: 'Bob Williams',
+    name: 'Utsav Saha',
     email: 'bob@example.com',
     location: { name: 'Oakland, CA', lat: 37.8044, lng: -122.2712 },
     points: 80,
-    avatar: 'https://i.pravatar.cc/150?u=bob',
+    avatar: 'https://i.pravatar.cc/150?u=utsav',
     skillsOffered: ['guitar', 'photography'],
     skillsWanted: ['coding', 'spanish'],
     badges: ['first-session-teacher', 'top-teacher'],
@@ -170,7 +170,7 @@ export const reviews: Review[] = [
     reviewerId: 1,
     revieweeId: 2,
     stars: 5,
-    feedback: 'Bob was a fantastic guitar teacher! Very patient and knowledgeable.',
+    feedback: 'Utsav was a fantastic guitar teacher! Very patient and knowledgeable.',
   },
   {
     id: 2,
@@ -178,7 +178,7 @@ export const reviews: Review[] = [
     reviewerId: 4,
     revieweeId: 1,
     stars: 4,
-    feedback: 'Alice knows so much about gardening. I learned a lot about composting.',
+    feedback: 'Jit knows so much about gardening. I learned a lot about composting.',
   },
 ];
 
@@ -188,7 +188,7 @@ const messages: Message[] = [
     { id: 3, conversationId: 1, senderId: 2, text: "How about this Friday at 5pm? We could meet at the downtown park.", timestamp: "2024-08-14T10:06:00Z", read: true },
     { id: 4, conversationId: 1, senderId: 1, text: "Sounds perfect! See you then. Do I need to bring my own guitar?", timestamp: "2024-08-14T10:10:00Z", read: true },
     { id: 5, conversationId: 1, senderId: 2, text: "I can bring an extra one for you to use for the first lesson.", timestamp: "2024-08-14T10:12:00Z", read: false },
-    { id: 6, conversationId: 2, senderId: 3, text: "Hi Alice, I see you want to learn cooking. I'm looking for someone to teach me Yoga.", timestamp: "2024-08-18T11:00:00Z", read: true },
+    { id: 6, conversationId: 2, senderId: 3, text: "Hi Jit, I see you want to learn cooking. I'm looking for someone to teach me Yoga.", timestamp: "2024-08-18T11:00:00Z", read: true },
     { id: 7, conversationId: 2, senderId: 1, text: "That's great, Charlie! I'm not a Yoga expert but I can teach you the basics. I'd love to learn some cooking.", timestamp: "2024-08-18T11:05:00Z", read: true },
     { id: 8, conversationId: 3, senderId: 4, text: "Hi! Ready for our painting session?", timestamp: "2024-08-24T09:00:00Z", read: true },
     { id: 9, conversationId: 4, senderId: 1, text: "Hey Diana, I have a quick question about the Yoga session we have pending.", timestamp: "2024-08-28T15:00:00Z", read: false },
