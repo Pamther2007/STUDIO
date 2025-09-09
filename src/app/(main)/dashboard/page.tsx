@@ -12,6 +12,7 @@ import {
   MessageSquare,
   Sparkles,
   Handshake,
+  Clock,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, users, sessions, skills, reviews } from '@/lib/data';
@@ -32,6 +33,8 @@ export default function DashboardPage() {
     )
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+  const nextSession = upcomingSessions[0];
+
   const recentReviews = reviews
     .filter((r) => r.revieweeId === currentUser.id)
     .slice(0, 2);
@@ -48,6 +51,38 @@ export default function DashboardPage() {
           Welcome back, {currentUser.name.split(' ')[0]}!
         </h2>
       </div>
+
+      {nextSession && (
+        <Card className="bg-blue-50 border-blue-200">
+           <CardHeader>
+                <CardTitle className="text-blue-900">Your Next Session is Coming Up!</CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-6">
+                <div className="flex flex-col items-center justify-center bg-blue-100 p-4 rounded-lg">
+                    <span className="text-3xl font-bold text-blue-800">{format(new Date(nextSession.date), "d")}</span>
+                    <span className="text-sm font-medium text-blue-700">{format(new Date(nextSession.date), "MMM")}</span>
+                </div>
+                <div className="flex-1">
+                    <p className="font-bold text-lg text-blue-900">
+                        {skills.find(s => s.id === nextSession.skillId)?.name}
+                    </p>
+                    <p className="text-sm text-blue-800">
+                        {nextSession.teacherId === currentUser.id ? 
+                        `You are teaching ${users.find(u => u.id === nextSession.learnerId)?.name}` :
+                        `You are learning from ${users.find(u => u.id === nextSession.teacherId)?.name}`
+                        }
+                    </p>
+                    <p className="text-sm text-blue-700 flex items-center gap-1 mt-1">
+                        <Clock className="h-4 w-4" />
+                        {format(new Date(nextSession.date), "eeee, h:mm a")} ({formatDistanceToNow(new Date(nextSession.date), { addSuffix: true })})
+                    </p>
+                </div>
+                <Button asChild>
+                    <Link href="/sessions">View Session</Link>
+                </Button>
+            </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
