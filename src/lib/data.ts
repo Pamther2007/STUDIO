@@ -61,7 +61,7 @@ export const users: User[] = [
     email: 'pritam@example.com',
     location: { name: 'San Mateo, CA', lat: 37.5630, lng: -122.3255 },
     points: 120,
-    avatar: 'https://i.pravatar.cc/150?u=pritam',
+    avatar: 'https://i.pravatar.cc/150?u=pritam-singh',
     skillsOffered: ['yoga', 'painting'],
     skillsWanted: ['gardening'],
     badges: ['first-session-learner', 'top-teacher'],
