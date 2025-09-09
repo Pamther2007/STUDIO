@@ -24,6 +24,7 @@ import {
   Bot,
   LogOut,
   Award,
+  MessageSquare,
 } from 'lucide-react';
 import Logo from './logo';
 import { getCurrentUser } from '@/lib/data';
@@ -32,6 +33,7 @@ const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/matches', icon: Users, label: 'Matches' },
   { href: '/sessions', icon: Calendar, label: 'Sessions' },
+  { href: '/messages', icon: MessageSquare, label: 'Messages' },
   { href: '/map', icon: MapPin, label: 'Map' },
   { href: '/ai-matcher', icon: Bot, label: 'AI Matcher' },
 ];
@@ -57,7 +59,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>

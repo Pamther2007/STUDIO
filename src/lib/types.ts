@@ -39,3 +39,18 @@ export type Review = {
   stars: number;
   feedback: string;
 };
+
+export type Message = {
+  id: number;
+  conversationId: number;
+  senderId: number;
+  text: string;
+  timestamp: string;
+  read: boolean;
+};
+
+export type Conversation = {
+  id: number;
+  participantIds: number[];
+  lastMessage: Message;
+};

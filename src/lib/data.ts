@@ -1,11 +1,11 @@
-import type { User, Skill, Session, Review } from './types';
+import type { User, Skill, Session, Review, Conversation, Message } from './types';
 
 export const skills: Skill[] = [
   { id: 'cooking', name: 'Cooking', icon: 'ChefHat' },
   { id: 'guitar', name: 'Guitar', icon: 'Guitar' },
   { id: 'coding', name: 'Coding', icon: 'Code' },
   { id: 'spanish', name: 'Spanish', icon: 'Languages' },
-  { id: 'yoga', name: 'Yoga', icon: 'Yoga' },
+  { id: 'yoga', name: 'Yoga', icon: 'PersonStanding' },
   { id: 'photography', name: 'Photography', icon: 'Camera' },
   { id: 'gardening', name: 'Gardening', icon: 'Sprout' },
   { id: 'painting', name: 'Painting', icon: 'Paintbrush' },
@@ -139,6 +139,28 @@ export const reviews: Review[] = [
     feedback: 'Alice knows so much about gardening. I learned a lot about composting.',
   },
 ];
+
+const messages: Message[] = [
+    { id: 1, conversationId: 1, senderId: 2, text: "Hey! I saw you're interested in learning guitar. I can teach you.", timestamp: "2024-08-14T10:00:00Z", read: true },
+    { id: 2, conversationId: 1, senderId: 1, text: "Awesome! Yes, I'd love to. When are you free?", timestamp: "2024-08-14T10:05:00Z", read: true },
+    { id: 3, conversationId: 1, senderId: 2, text: "How about this Friday at 5pm? We could meet at the downtown park.", timestamp: "2024-08-14T10:06:00Z", read: true },
+    { id: 4, conversationId: 1, senderId: 1, text: "Sounds perfect! See you then. Do I need to bring my own guitar?", timestamp: "2024-08-14T10:10:00Z", read: true },
+    { id: 5, conversationId: 1, senderId: 2, text: "I can bring an extra one for you to use for the first lesson.", timestamp: "2024-08-14T10:12:00Z", read: false },
+    { id: 6, conversationId: 2, senderId: 3, text: "Hi Alice, I see you want to learn cooking. I'm looking for someone to teach me Yoga.", timestamp: "2024-08-18T11:00:00Z", read: true },
+    { id: 7, conversationId: 2, senderId: 1, text: "That's great, Charlie! I'm not a Yoga expert but I can teach you the basics. I'd love to learn some cooking.", timestamp: "2024-08-18T11:05:00Z", read: true },
+    { id: 8, conversationId: 3, senderId: 4, text: "Hi! Ready for our painting session?", timestamp: "2024-08-24T09:00:00Z", read: true },
+    { id: 9, conversationId: 4, senderId: 1, text: "Hey Diana, I have a quick question about the Yoga session we have pending.", timestamp: "2024-08-28T15:00:00Z", read: false },
+
+];
+
+export const conversations: Conversation[] = [
+    { id: 1, participantIds: [1, 2], lastMessage: messages[4] },
+    { id: 2, participantIds: [1, 3], lastMessage: messages[6] },
+    { id: 3, participantIds: [4, 5], lastMessage: messages[7] },
+    { id: 4, participantIds: [1, 4], lastMessage: messages[8] },
+];
+
+export const getMessages = (conversationId: number) => messages.filter(m => m.conversationId === conversationId);
 
 // Helper to get current user (assuming user with id 1 is logged in)
 export const getCurrentUser = () => users.find(u => u.id === 1) as User;

@@ -15,7 +15,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { getCurrentUser, users, sessions, skills, reviews } from '@/lib/data';
+import { getCurrentUser, users, sessions, skills, reviews, conversations } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SkillIcon } from '@/components/skill-icon';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -42,6 +42,12 @@ export default function DashboardPage() {
   const potentialMatches = users.filter(user => 
     user.id !== currentUser.id && 
     user.skillsOffered.some(skillId => currentUser.skillsWanted.includes(skillId))
+  ).length;
+
+  const unreadMessages = conversations.filter(c => 
+    c.participantIds.includes(currentUser.id) && 
+    c.lastMessage.senderId !== currentUser.id && 
+    !c.lastMessage.read
   ).length;
 
   return (
@@ -99,6 +105,24 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">New Messages</CardTitle>
+            <div className="relative">
+              <MessageSquare className="h-4 w-4 text-muted-foreground" />
+              {unreadMessages > 0 && <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+              </span>}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{unreadMessages}</div>
+            <p className="text-xs text-muted-foreground">
+              From {unreadMessages} conversations
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Upcoming Sessions</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -106,18 +130,6 @@ export default function DashboardPage() {
             <div className="text-2xl font-bold">{upcomingSessions.length}</div>
             <p className="text-xs text-muted-foreground">
               Ready to learn and teach
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Potential Matches</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+{potentialMatches}</div>
-            <p className="text-xs text-muted-foreground">
-              New connections waiting
             </p>
           </CardContent>
         </Card>

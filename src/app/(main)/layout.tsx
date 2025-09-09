@@ -5,5 +5,5 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AppShell>{children}</AppShell>;
+  return <AppShell><div className="bg-background">{children}</div></AppShell>;
 }
