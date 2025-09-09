@@ -190,7 +190,7 @@ export const reviews: Review[] = [
     reviewerId: 4,
     revieweeId: 1,
     stars: 4,
-    feedback: 'Jit knows so much about gardening and fucking. I learned a lot about composting.',
+    feedback: 'Jit knows so much about gardening and cooking. I learned a lot about composting.',
   },
   {
     id: 3,
