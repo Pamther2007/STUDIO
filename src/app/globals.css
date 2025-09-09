@@ -86,16 +86,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-@layer utilities {
-  @keyframes color-change {
-    0% { color: #facc15; } /* yellow */
-    25% { color: #fb923c; } /* orange */
-    50% { color: #f87171; } /* red */
-    75% { color: #fb923c; } /* orange */
-    100% { color: #facc15; } /* yellow */
-  }
-  .animate-color-change {
-    animation: color-change 3s infinite;
-  }
-}

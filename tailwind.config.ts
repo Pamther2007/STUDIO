@@ -88,15 +88,17 @@ export default {
             height: '0',
           },
         },
-        'color-change': {
-          '0%, 100%': { color: 'hsl(var(--primary))' },
-          '50%': { color: 'hsl(var(--accent))' },
+        'electric': {
+          '0%, 100%': { transform: 'translateX(0)', color: '#fef08a' /* yellow-200 */, textShadow: '0 0 5px #fef08a, 0 0 10px #fef08a' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-1px)', color: '#fde047' /* yellow-400 */, textShadow: 'none' },
+          '20%, 40%, 60%, 80%': { transform: 'translateX(1px)', color: '#fde047' /* yellow-400 */, textShadow: 'none' },
+          '55%': { transform: 'translateY(1px)', textShadow: '0 0 5px #fef08a, 0 0 15px #fef08a' },
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'color-change': 'color-change 2s ease-in-out infinite',
+        'electric': 'electric 1.5s ease-in-out infinite',
       },
     },
   },

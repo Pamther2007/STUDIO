@@ -8,7 +8,7 @@ export default function Logo({ className }: { className?: string }) {
         className
       )}
     >
-      <span className="text-2xl animate-color-change">⚡</span>
+      <span className="text-2xl animate-electric">⚡</span>
     </div>
   );
 }
