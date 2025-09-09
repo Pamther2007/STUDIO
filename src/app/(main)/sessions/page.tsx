@@ -21,6 +21,7 @@ import {
   User,
   BookOpen,
   Calendar as CalendarIcon,
+  Star,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { SkillIcon } from '@/components/skill-icon';
@@ -77,6 +78,14 @@ function SessionCard({ session }: { session: (typeof sessions)[0] }) {
             <Button size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 hover:text-red-700">Decline</Button>
           </div>
         )}
+        {session.status === 'completed' && (
+             <div className="mt-2 flex gap-2">
+                <Button size="sm">
+                    <Star className="mr-2 h-4 w-4" />
+                    Rate Session
+                </Button>
+            </div>
+        )}
       </div>
     </div>
   );
@@ -94,7 +103,7 @@ export default function SessionsPage() {
     .filter((s) => s.status === 'confirmed' && new Date(s.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const pendingSessions = userSessions.filter((s) => s.status === 'pending');
-  const pastSessions = userSessions.filter((s) => ['completed', 'cancelled'].includes(s.status));
+  const pastSessions = userSessions.filter((s) => ['completed', 'cancelled'].includes(s.status)).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const sessionDates = userSessions
     .filter(s => s.status === 'confirmed')
@@ -106,7 +115,7 @@ export default function SessionsPage() {
         <h2 className="text-3xl font-bold tracking-tight">Your Sessions</h2>
       </div>
       <p className="text-muted-foreground">
-        Manage your skill exchange bookings.
+        Manage your skill exchange bookings and rate past sessions.
       </p>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">

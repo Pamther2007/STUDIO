@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { SkillIcon } from '@/components/skill-icon';
 import { getCurrentUser, skills, users, reviews, badges as allBadges } from '@/lib/data';
-import { Award, Edit, Handshake, MapPin, Star, Trophy, Users as UsersIcon, Languages, Sprout } from 'lucide-react';
+import { Award, Edit, MapPin, Star, Trophy, Users as UsersIcon, Languages, Sprout } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -20,6 +20,7 @@ const badgeIcons: { [key: string]: React.ElementType } = {
   Users: UsersIcon,
   Languages,
   Sprout,
+  Trophy,
 };
 
 export default function ProfilePage() {

@@ -17,7 +17,8 @@ export const badges: Badge[] = [
     { id: 'top-teacher', name: 'Top Teacher', description: 'Received a 5-star review as a teacher.', icon: 'Star' },
     { id: 'polyglot', name: 'Polyglot', description: 'Offered to teach more than 2 skills.', icon: 'Languages' },
     { id: 'community-builder', name: 'Community Builder', description: 'Completed sessions with 3 different users.', icon: 'Users' },
-    { id: 'master-gardener', name: 'Master Gardener', description: 'Taught a gardening session.', icon: 'Sprout' }
+    { id: 'master-gardener', name: 'Master Gardener', description: 'Taught a gardening session.', icon: 'Sprout' },
+    { id: 'monthly-master', name: 'Monthly Master', description: 'Top learner of the month.', icon: 'Trophy' },
 ];
 
 export const users: User[] = [
@@ -52,7 +53,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=charlie',
     skillsOffered: ['coding', 'spanish'],
     skillsWanted: ['yoga', 'cooking'],
-    badges: ['first-session-learner', 'community-builder', 'polyglot'],
+    badges: ['first-session-learner', 'community-builder', 'polyglot', 'monthly-master'],
   },
   {
     id: 4,
@@ -131,6 +132,33 @@ export const sessions: Session[] = [
     skillId: 'photography',
     date: '2024-08-25T13:00:00Z',
     status: 'pending',
+    mode: 'in-person',
+  },
+  {
+    id: 7,
+    teacherId: 3,
+    learnerId: 1,
+    skillId: 'spanish',
+    date: new Date(new Date().setDate(new Date().getDate() - 2)).toISOString(),
+    status: 'completed',
+    mode: 'online',
+  },
+  {
+    id: 8,
+    teacherId: 4,
+    learnerId: 3,
+    skillId: 'yoga',
+    date: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+    status: 'completed',
+    mode: 'in-person',
+  },
+  {
+    id: 9,
+    teacherId: 5,
+    learnerId: 3,
+    skillId: 'photography',
+    date: new Date(new Date().setDate(new Date().getDate() - 3)).toISOString(),
+    status: 'completed',
     mode: 'in-person',
   }
 ];

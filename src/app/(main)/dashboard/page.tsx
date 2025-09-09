@@ -13,14 +13,17 @@ import {
   Sparkles,
   Handshake,
   Clock,
+  Flame,
+  Target,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, users, sessions, skills, reviews, conversations } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SkillIcon } from '@/components/skill-icon';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 export default function DashboardPage() {
   const currentUser = getCurrentUser();
@@ -49,6 +52,14 @@ export default function DashboardPage() {
     c.lastMessage.senderId !== currentUser.id && 
     !c.lastMessage.read
   ).length;
+  
+  const completedSessions = sessions.filter(s => 
+      (s.learnerId === currentUser.id || s.teacherId === currentUser.id) && s.status === 'completed'
+    ).length;
+
+  const weeklyGoal = 5;
+  const weeklyProgress = (completedSessions / weeklyGoal) * 100;
+
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
@@ -123,28 +134,27 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Upcoming Sessions</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Completed Sessions</CardTitle>
+            <Handshake className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{upcomingSessions.length}</div>
+            <div className="text-2xl font-bold">{completedSessions}</div>
             <p className="text-xs text-muted-foreground">
-              Ready to learn and teach
+              Across all your skills
             </p>
           </CardContent>
         </Card>
-        <Card className="bg-primary/10 border-primary/40">
+        <Card>
            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-primary">AI Matcher</CardTitle>
-            <Sparkles className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium">Your Progress</CardTitle>
+            <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-primary-foreground mb-2">
-              Find your perfect skill swap with our smart recommendation tool.
+            <div className="text-2xl font-bold">{completedSessions}/{weeklyGoal}</div>
+             <p className="text-xs text-muted-foreground mb-2">
+              Sessions this week
             </p>
-             <Button size="sm" asChild>
-                <Link href="/ai-matcher">Try Now</Link>
-            </Button>
+            <Progress value={weeklyProgress} className="h-2" />
           </CardContent>
         </Card>
       </div>
@@ -219,7 +229,7 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium">{reviewer.name} reviewed you</p>
                             <div className="flex items-center">
                                 {[...Array(5)].map((_, i) => (
-                                    <Handshake key={i} className={`h-4 w-4 ${i < review.stars ? 'text-primary fill-current' : 'text-muted-foreground'}`} />
+                                    <Star key={i} className={`h-4 w-4 ${i < review.stars ? 'text-primary fill-current' : 'text-muted-foreground'}`} />
                                 ))}
                             </div>
                             <blockquote className="mt-2 border-l-2 pl-3 text-sm italic text-muted-foreground">
