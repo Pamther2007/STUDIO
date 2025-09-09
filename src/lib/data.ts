@@ -64,15 +64,15 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=pritam',
     skillsOffered: ['yoga', 'painting'],
     skillsWanted: ['gardening'],
-    badges: ['first-session-learner'],
+    badges: ['first-session-learner', 'top-teacher'],
   },
     {
     id: 5,
-    name: 'Ethan Hunt',
-    email: 'ethan@example.com',
+    name: 'Subhajit Manna',
+    email: 'subhajit@example.com',
     location: { name: 'Palo Alto, CA', lat: 37.4419, lng: -122.1430 },
     points: 95,
-    avatar: 'https://i.pravatar.cc/150?u=ethan',
+    avatar: 'https://i.pravatar.cc/150?u=subhajit',
     skillsOffered: ['photography'],
     skillsWanted: ['painting', 'coding'],
     badges: [],
@@ -187,6 +187,14 @@ export const reviews: Review[] = [
     revieweeId: 4,
     stars: 5,
     feedback: 'Pritam is an amazing yoga instructor. Highly recommended!',
+  },
+  {
+    id: 4,
+    sessionId: 4,
+    reviewerId: 3,
+    revieweeId: 4,
+    stars: 5,
+    feedback: 'I second that, Pritam is great!',
   }
 ];
 
