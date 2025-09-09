@@ -99,13 +99,18 @@ export default {
             '25%': { backgroundColor: '#ffffff' }, /* white */
             '50%': { backgroundColor: '#22c55e' }, /* green-500 */
             '75%': { backgroundColor: '#000000' }, /* black */
-        }
+        },
+        'text-color-change': {
+          '0%, 100%': { color: '#3b82f6' /* blue-500 */ },
+          '50%': { color: '#fb923c' /* orange-400 */ },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'electric': 'electric 1.5s ease-in-out infinite',
         'bg-color-change': 'bg-color-change 8s linear infinite',
+        'text-color-change': 'text-color-change 4s ease-in-out infinite',
       },
     },
   },
