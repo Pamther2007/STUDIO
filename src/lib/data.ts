@@ -1,4 +1,4 @@
-import type { User, Skill, Session, Review, Conversation, Message } from './types';
+import type { User, Skill, Session, Review, Conversation, Message, Badge } from './types';
 
 export const skills: Skill[] = [
   { id: 'cooking', name: 'Cooking', icon: 'ChefHat' },
@@ -11,6 +11,15 @@ export const skills: Skill[] = [
   { id: 'painting', name: 'Painting', icon: 'Paintbrush' },
 ];
 
+export const badges: Badge[] = [
+    { id: 'first-session-learner', name: 'First Step', description: 'Completed your first session as a learner.', icon: 'Award' },
+    { id: 'first-session-teacher', name: 'First Class', description: 'Completed your first session as a teacher.', icon: 'Award' },
+    { id: 'top-teacher', name: 'Top Teacher', description: 'Received a 5-star review as a teacher.', icon: 'Star' },
+    { id: 'polyglot', name: 'Polyglot', description: 'Offered to teach more than 2 skills.', icon: 'Languages' },
+    { id: 'community-builder', name: 'Community Builder', description: 'Completed sessions with 3 different users.', icon: 'Users' },
+    { id: 'master-gardener', name: 'Master Gardener', description: 'Taught a gardening session.', icon: 'Sprout' }
+];
+
 export const users: User[] = [
   {
     id: 1,
@@ -21,6 +30,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=alice',
     skillsOffered: ['cooking', 'gardening'],
     skillsWanted: ['guitar', 'photography'],
+    badges: ['first-session-learner', 'first-session-teacher', 'master-gardener'],
   },
   {
     id: 2,
@@ -31,6 +41,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=bob',
     skillsOffered: ['guitar', 'photography'],
     skillsWanted: ['coding', 'spanish'],
+    badges: ['first-session-teacher', 'top-teacher'],
   },
   {
     id: 3,
@@ -41,6 +52,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=charlie',
     skillsOffered: ['coding', 'spanish'],
     skillsWanted: ['yoga', 'cooking'],
+    badges: ['first-session-learner', 'community-builder', 'polyglot'],
   },
   {
     id: 4,
@@ -51,6 +63,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=diana',
     skillsOffered: ['yoga', 'painting'],
     skillsWanted: ['gardening'],
+    badges: ['first-session-learner'],
   },
     {
     id: 5,
@@ -61,6 +74,7 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?u=ethan',
     skillsOffered: ['photography'],
     skillsWanted: ['painting', 'coding'],
+    badges: [],
   },
 ];
 

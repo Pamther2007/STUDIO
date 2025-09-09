@@ -6,6 +6,13 @@ export type Skill = {
   icon: string; // name of lucide-react icon
 };
 
+export type Badge = {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+};
+
 export type User = {
   id: number;
   name: string;
@@ -19,6 +26,7 @@ export type User = {
   avatar: string;
   skillsOffered: string[]; // array of skill IDs
   skillsWanted: string[]; // array of skill IDs
+  badges: string[]; // array of badge IDs
 };
 
 export type Session = {

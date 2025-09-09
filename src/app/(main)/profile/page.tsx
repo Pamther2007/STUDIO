@@ -9,14 +9,25 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { SkillIcon } from '@/components/skill-icon';
-import { getCurrentUser, skills, users, reviews } from '@/lib/data';
-import { Award, Edit, Handshake, MapPin, Star } from 'lucide-react';
+import { getCurrentUser, skills, users, reviews, badges as allBadges } from '@/lib/data';
+import { Award, Edit, Handshake, MapPin, Star, Trophy, Users as UsersIcon, Languages, Sprout } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+const badgeIcons: { [key: string]: React.ElementType } = {
+  Award,
+  Star,
+  Users: UsersIcon,
+  Languages,
+  Sprout,
+};
 
 export default function ProfilePage() {
   const currentUser = getCurrentUser();
   const getSkillName = (skillId: string) => skills.find(s => s.id === skillId)?.name || 'Unknown Skill';
   const userReviews = reviews.filter(r => r.revieweeId === currentUser.id);
+
+  const userBadges = currentUser.badges.map(badgeId => allBadges.find(b => b.id === badgeId)).filter(Boolean);
 
   return (
     <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
@@ -40,33 +51,70 @@ export default function ProfilePage() {
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Skills Offered</CardTitle>
-            <CardDescription>These are the skills you can teach others.</CardDescription>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+           <CardHeader>
+            <CardTitle>Skills</CardTitle>
+            <CardDescription>The skills you offer and want to learn.</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-2">
-            {currentUser.skillsOffered.map(skillId => (
-              <Badge key={skillId} className="text-base px-3 py-1 flex items-center gap-2">
-                <SkillIcon skillId={skillId} className="h-4 w-4" />
-                {getSkillName(skillId)}
-              </Badge>
-            ))}
+          <CardContent className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+            <div>
+              <h3 className="font-semibold mb-2">Skills Offered</h3>
+              <div className="flex flex-wrap gap-2">
+                {currentUser.skillsOffered.map(skillId => (
+                  <Badge key={skillId} className="text-base px-3 py-1 flex items-center gap-2">
+                    <SkillIcon skillId={skillId} className="h-4 w-4" />
+                    {getSkillName(skillId)}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+               <h3 className="font-semibold mb-2">Skills Wanted</h3>
+              <div className="flex flex-wrap gap-2">
+                {currentUser.skillsWanted.map(skillId => (
+                  <Badge key={skillId} variant="secondary" className="text-base px-3 py-1 flex items-center gap-2">
+                    <SkillIcon skillId={skillId} className="h-4 w-4" />
+                    {getSkillName(skillId)}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader>
-            <CardTitle>Skills Wanted</CardTitle>
-            <CardDescription>These are the skills you want to learn.</CardDescription>
+           <CardHeader>
+            <CardTitle>Achievements</CardTitle>
+            <CardDescription>Badges you've earned.</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-2">
-            {currentUser.skillsWanted.map(skillId => (
-              <Badge key={skillId} variant="secondary" className="text-base px-3 py-1 flex items-center gap-2">
-                <SkillIcon skillId={skillId} className="h-4 w-4" />
-                {getSkillName(skillId)}
-              </Badge>
-            ))}
+          <CardContent>
+            {userBadges.length > 0 ? (
+                <TooltipProvider>
+                    <div className="flex flex-wrap gap-4">
+                    {userBadges.map(badge => {
+                        const Icon = badgeIcons[badge!.icon] || Trophy;
+                        return (
+                        <Tooltip key={badge!.id}>
+                            <TooltipTrigger>
+                                <div className="flex flex-col items-center gap-2">
+                                    <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary">
+                                        <Icon className="h-6 w-6" />
+                                    </div>
+                                    <span className="text-xs text-center font-medium w-20 truncate">{badge!.name}</span>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p className="font-bold">{badge!.name}</p>
+                                <p className="text-sm text-muted-foreground">{badge!.description}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        );
+                    })}
+                    </div>
+              </TooltipProvider>
+            ) : (
+                <p className="text-center text-muted-foreground py-8">No badges earned yet.</p>
+            )}
           </CardContent>
         </Card>
       </div>
