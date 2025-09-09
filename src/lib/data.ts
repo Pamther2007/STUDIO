@@ -57,11 +57,11 @@ export const users: User[] = [
   },
   {
     id: 4,
-    name: 'Diana Prince',
-    email: 'diana@example.com',
+    name: 'Pritam Singh',
+    email: 'pritam@example.com',
     location: { name: 'San Mateo, CA', lat: 37.5630, lng: -122.3255 },
     points: 120,
-    avatar: 'https://i.pravatar.cc/150?u=diana',
+    avatar: 'https://i.pravatar.cc/150?u=pritam',
     skillsOffered: ['yoga', 'painting'],
     skillsWanted: ['gardening'],
     badges: ['first-session-learner'],
@@ -191,7 +191,7 @@ const messages: Message[] = [
     { id: 6, conversationId: 2, senderId: 3, text: "Hi Jit, I see you want to learn cooking. I'm looking for someone to teach me Yoga.", timestamp: "2024-08-18T11:00:00Z", read: true },
     { id: 7, conversationId: 2, senderId: 1, text: "That's great, Soumyojeet! I'm not a Yoga expert but I can teach you the basics. I'd love to learn some cooking.", timestamp: "2024-08-18T11:05:00Z", read: true },
     { id: 8, conversationId: 3, senderId: 4, text: "Hi! Ready for our painting session?", timestamp: "2024-08-24T09:00:00Z", read: true },
-    { id: 9, conversationId: 4, senderId: 1, text: "Hey Diana, I have a quick question about the Yoga session we have pending.", timestamp: "2024-08-28T15:00:00Z", read: false },
+    { id: 9, conversationId: 4, senderId: 1, text: "Hey Pritam, I have a quick question about the Yoga session we have pending.", timestamp: "2024-08-28T15:00:00Z", read: false },
 
 ];
 
