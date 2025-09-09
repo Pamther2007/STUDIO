@@ -24,8 +24,8 @@ export const badges: Badge[] = [
 export const users: User[] = [
   {
     id: 1,
-    name: 'Jit Saha',
-    email: 'jit@example.com',
+    name: 'Carry Minati',
+    email: 'carryminati@example.com',
     location: { name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194 },
     points: 290,
     avatar: 'https://i.pravatar.cc/150?u=jit',
@@ -35,8 +35,8 @@ export const users: User[] = [
   },
   {
     id: 2,
-    name: 'Utsav Saha',
-    email: 'utsav@example.com',
+    name: 'Alakh Panday',
+    email: 'alakh@example.com',
     location: { name: 'west bengal, howrah', lat: 37.8044, lng: -122.2712 },
     points: 80,
     avatar: 'https://plus.unsplash.com/premium_photo-1739580360043-f2c498c1d861?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z2lnYSUyMGNoYWR8ZW58MHx8MHx8fDA%3D',
