@@ -1,4 +1,3 @@
-import { Handshake } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Logo({ className }: { className?: string }) {
@@ -9,7 +8,7 @@ export default function Logo({ className }: { className?: string }) {
         className
       )}
     >
-      <Handshake className="h-6 w-6" />
+      <span className="text-2xl animate-color-change">⚡</span>
     </div>
   );
 }

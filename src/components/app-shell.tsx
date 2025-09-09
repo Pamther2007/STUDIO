@@ -47,7 +47,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-3 p-2">
             <Logo />
             <div className="flex flex-col">
-              <h2 className="text-lg font-bold font-headline">Thunder Lerner</h2>
+              <h2 className="text-lg font-bold font-headline">Thunder Learner</h2>
             </div>
           </div>
         </SidebarHeader>
