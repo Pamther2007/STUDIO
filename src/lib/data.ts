@@ -113,7 +113,7 @@ export const sessions: Session[] = [
     learnerId: 1,
     skillId: 'yoga',
     date: '2024-09-01T09:00:00Z',
-    status: 'pending',
+    status: 'completed',
     mode: 'online',
   },
   {
@@ -180,6 +180,14 @@ export const reviews: Review[] = [
     stars: 4,
     feedback: 'Jit knows so much about gardening. I learned a lot about composting.',
   },
+  {
+    id: 3,
+    sessionId: 4,
+    reviewerId: 1,
+    revieweeId: 4,
+    stars: 5,
+    feedback: 'Pritam is an amazing yoga instructor. Highly recommended!',
+  }
 ];
 
 const messages: Message[] = [
