@@ -24,7 +24,7 @@ export const badges: Badge[] = [
 export const users: User[] = [
   {
     id: 1,
-    name: 'Alice Johnson',
+    name: 'Jit Saha',
     email: 'alice@example.com',
     location: { name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194 },
     points: 150,

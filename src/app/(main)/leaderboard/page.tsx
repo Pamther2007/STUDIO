@@ -11,6 +11,7 @@ import { Trophy, Star, BookOpen, User, Crown, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
+import { Progress } from '@/components/ui/progress';
 
 export default function LeaderboardPage() {
   const getLeaderboardData = () => {
@@ -70,7 +71,7 @@ export default function LeaderboardPage() {
     'text-muted-foreground',
   ];
   
-  const LeaderboardList = ({ users, stat, statLabel }: { users: any[], stat: string, statLabel: string }) => (
+  const LeaderboardList = ({ users, stat, statLabel, maxStat }: { users: any[], stat: string, statLabel: string, maxStat: number }) => (
     <ul className="space-y-4">
       {users.map((user, index) => (
         <li key={user.id} className="flex items-center gap-4">
@@ -79,9 +80,9 @@ export default function LeaderboardPage() {
             <AvatarImage src={user.avatar} />
             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div className="flex-1">
+          <div className="flex-1 space-y-1">
             <p className="font-semibold">{user.name}</p>
-            <p className="text-sm text-muted-foreground">{user.location.name}</p>
+            <Progress value={(user[stat] / maxStat) * 100} className="h-2" />
           </div>
           <Badge variant="secondary">{user[stat]} {statLabel}</Badge>
         </li>
@@ -107,7 +108,7 @@ export default function LeaderboardPage() {
             <CardDescription>Most sessions taught.</CardDescription>
           </CardHeader>
           <CardContent>
-            <LeaderboardList users={topTeachers} stat="taughtSessions" statLabel="sessions" />
+            <LeaderboardList users={topTeachers} stat="taughtSessions" statLabel="sessions" maxStat={topTeachers[0]?.taughtSessions || 1} />
           </CardContent>
         </Card>
         
@@ -127,9 +128,13 @@ export default function LeaderboardPage() {
                     <AvatarImage src={user.avatar} />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <div className="flex-1">
+                  <div className="flex-1 space-y-1">
                     <p className="font-semibold">{user.name}</p>
-                    <p className="text-sm text-muted-foreground">{user.reviewCount} reviews</p>
+                    <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`h-4 w-4 ${i < user.avgRating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/30'}`} />
+                        ))}
+                    </div>
                   </div>
                   <Badge variant="default" className="flex items-center gap-1">
                     <Star className="h-3 w-3" />
@@ -150,7 +155,7 @@ export default function LeaderboardPage() {
           </CardHeader>
           <CardContent>
             {topMonthlyLearners.length > 0 ? (
-                <LeaderboardList users={topMonthlyLearners} stat="monthlyLearnedSessions" statLabel="sessions" />
+                <LeaderboardList users={topMonthlyLearners} stat="monthlyLearnedSessions" statLabel="sessions" maxStat={topMonthlyLearners[0]?.monthlyLearnedSessions || 1} />
             ) : (
                 <p className="text-center text-muted-foreground py-8">No monthly learners yet. Be the first!</p>
             )}
@@ -165,7 +170,7 @@ export default function LeaderboardPage() {
             <CardDescription>Most sessions learned.</CardDescription>
           </CardHeader>
           <CardContent>
-             <LeaderboardList users={topLearners} stat="learnedSessions" statLabel="sessions" />
+             <LeaderboardList users={topLearners} stat="learnedSessions" statLabel="sessions" maxStat={topLearners[0]?.learnedSessions || 1} />
           </CardContent>
         </Card>
 
