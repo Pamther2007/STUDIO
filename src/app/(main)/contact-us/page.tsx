@@ -52,7 +52,7 @@ export default function ContactUsPage() {
                            <div className="flex items-start gap-4">
                                <MapPin className="h-6 w-6 text-primary mt-1" />
                                <div>
-                                   <p className="font-semibold">SkillSwap Connect HQ</p>
+                                   <p className="font-semibold">Easy2Learn HQ</p>
                                    <p className="text-muted-foreground">Kolkata</p>
                                    <p className="text-muted-foreground">India</p>
                                </div>
@@ -61,7 +61,7 @@ export default function ContactUsPage() {
                                <Mail className="h-6 w-6 text-primary mt-1" />
                                <div>
                                    <p className="font-semibold">Email</p>
-                                   <a href="mailto:hello@skillswap.com" className="text-primary hover:underline">hello@skillswap.com</a>
+                                   <a href="mailto:hello@easy2learn.com" className="text-primary hover:underline">hello@easy2learn.com</a>
                                </div>
                            </div>
                            <div className="flex items-start gap-4">

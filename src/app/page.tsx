@@ -43,7 +43,9 @@ export default function LandingPage() {
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Logo />
-          <h1 className="text-2xl font-bold text-foreground">SkillSwap Connect</h1>
+           <h1 className="text-xl font-bold text-foreground tracking-wider">
+              Easy<span className="text-4xl font-bold text-primary align-middle">2</span>Learn
+            </h1>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" asChild>
@@ -96,7 +98,7 @@ export default function LandingPage() {
 
       <footer className="bg-secondary/50">
         <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-muted-foreground text-sm">
-          &copy; {new Date().getFullYear()} SkillSwap Connect. All rights reserved.
+          &copy; {new Date().getFullYear()} Easy2Learn. All rights reserved.
         </div>
       </footer>
     </div>

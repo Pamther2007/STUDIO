@@ -53,7 +53,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-3 p-2">
             <Logo />
             <div className="flex flex-col">
-              <h2 className="text-lg font-bold font-headline animate-text-color-change">SkillSwap Connect</h2>
+               <h2 className="text-lg font-bold font-headline tracking-wider animate-text-color-change">
+                Easy<span className="text-3xl font-bold text-primary align-middle">2</span>Learn
+              </h2>
             </div>
           </div>
         </SidebarHeader>
