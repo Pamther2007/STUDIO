@@ -93,12 +93,19 @@ export default {
           '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-1px)', color: '#fde047' /* yellow-400 */, textShadow: 'none' },
           '20%, 40%, 60%, 80%': { transform: 'translateX(1px)', color: '#fde047' /* yellow-400 */, textShadow: 'none' },
           '55%': { transform: 'translateY(1px)', textShadow: '0 0 5px #fef08a, 0 0 15px #fef08a' },
+        },
+        'bg-color-change': {
+            '0%, 100%': { backgroundColor: '#3b82f6' }, /* blue-500 */
+            '25%': { backgroundColor: '#ffffff' }, /* white */
+            '50%': { backgroundColor: '#22c55e' }, /* green-500 */
+            '75%': { backgroundColor: '#000000' }, /* black */
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'electric': 'electric 1.5s ease-in-out infinite',
+        'bg-color-change': 'bg-color-change 8s linear infinite',
       },
     },
   },

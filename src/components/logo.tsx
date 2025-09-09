@@ -4,7 +4,7 @@ export default function Logo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground',
+        'flex h-10 w-10 items-center justify-center rounded-lg animate-bg-color-change',
         className
       )}
     >
