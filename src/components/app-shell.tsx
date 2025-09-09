@@ -38,6 +38,7 @@ const navItems = [
   { href: '/messages', icon: MessageSquare, label: 'Messages' },
   { href: '/map', icon: MapPin, label: 'Map' },
   { href: '/ai-matcher', icon: Bot, label: 'AI Matcher' },
+  { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/contact-us', icon: Mail, label: 'Contact Us' },
 ];
 
