@@ -54,7 +54,7 @@ export default function ContactUsPage() {
                                <div>
                                    <p className="font-semibold">Thunder Learner HQ</p>
                                    <p className="text-muted-foreground">Kolkata</p>
-                                   <p className="text-muted-foreground">San Francisco, CA 94103</p>
+                                   <p className="text-muted-foreground">India</p>
                                </div>
                            </div>
                            <div className="flex items-start gap-4">
