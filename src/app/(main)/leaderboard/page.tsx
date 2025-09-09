@@ -15,84 +15,95 @@ import {
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { getCurrentUser, users, skills } from '@/lib/data';
-import { ArrowRight, Users } from 'lucide-react';
-import type { User } from '@/lib/types';
-import { Button } from '@/components/ui/button';
+import { getCurrentUser, users, sessions } from '@/lib/data';
+import { Trophy, BarChart } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 
-export default function MatchesPage() {
+export default function LeaderboardPage() {
   const currentUser = getCurrentUser();
+  const sortedUsers = [...users].sort((a, b) => b.points - a.points);
+  
+  const now = new Date();
+  const monthStart = startOfMonth(now);
+  const monthEnd = endOfMonth(now);
+  
+  const completedSessionsThisMonth = sessions.filter(s => 
+      (s.learnerId === currentUser.id || s.teacherId === currentUser.id) && 
+      s.status === 'completed' &&
+      isWithinInterval(new Date(s.date), { start: monthStart, end: monthEnd })
+    ).length;
+    
+  const monthlyGoal = 6;
+  const monthlyProgress = (completedSessionsThisMonth / monthlyGoal) * 100;
 
-  const getSkillName = (skillId: string) => skills.find(s => s.id === skillId)?.name || 'Unknown Skill';
-  const getSkillId = (skillName: string) => skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())?.id;
-
-  const matches: { user: User, matchReason: string, teaches: string, wants: string }[] = users
-    .filter(user => user.id !== currentUser.id)
-    .map(user => {
-      const offeredByThem = user.skillsOffered.filter(skillId => currentUser.skillsWanted.includes(skillId));
-      const wantedByThem = user.skillsWanted.filter(skillId => currentUser.skillsOffered.includes(skillId));
-      
-      if (offeredByThem.length > 0) {
-        return { 
-            user, 
-            matchReason: `Offers ${getSkillName(offeredByThem[0])}`,
-            teaches: getSkillName(offeredByThem[0]),
-            wants: getSkillName(user.skillsWanted[0])
-        };
-      }
-      if (wantedByThem.length > 0) {
-        return { 
-            user, 
-            matchReason: `Wants ${getSkillName(wantedByThem[0])}`,
-            teaches: getSkillName(user.skillsOffered[0]),
-            wants: getSkillName(wantedByThem[0])
-        };
-      }
-      return null;
-    })
-    .filter((match): match is { user: User, matchReason: string, teaches: string, wants: string } => match !== null);
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <h2 className="text-3xl font-bold tracking-tight">Welcome Back!</h2>
-        <p className="text-muted-foreground">
-            Here's your learning and teaching snapshot for this month.
-        </p>
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Leaderboard</h2>
+      </div>
+      <p className="text-muted-foreground">
+        See how you stack up against other learners and teachers in the community.
+      </p>
 
-      <Card>
-        <CardHeader>
+      <div className="grid gap-6 md:grid-cols-1">
+        <Card>
+          <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="text-primary" /> Your Skill Matches
+              <BarChart className="text-primary" /> Session Progress
             </CardTitle>
             <CardDescription>
-              Connect with users based on your skills and location.
+              You completed {completedSessionsThisMonth} of {monthlyGoal} sessions this month.
             </CardDescription>
           </CardHeader>
-        <CardContent>
-           <div className="space-y-4">
-              {matches.slice(0,3).map(({ user, teaches, wants }) => (
-                  <div key={user.id} className="flex items-center justify-between p-4 rounded-lg border">
-                      <div className="flex items-center gap-4">
-                        <Avatar className="h-12 w-12">
-                            <AvatarImage src={user.avatar} alt={user.name} />
-                            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          <CardContent>
+            <div className="flex items-center gap-4">
+                <span className="font-bold text-lg text-primary">{Math.round(monthlyProgress)}%</span>
+                <Progress value={monthlyProgress} className="h-4" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="text-primary" /> Monthly Ranking
+            </CardTitle>
+            <CardDescription>
+              Top learners and teachers in the community based on points.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Rank</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead className="text-right">Points</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedUsers.map((user, index) => (
+                  <TableRow key={user.id} className={user.id === currentUser.id ? 'bg-secondary' : ''}>
+                    <TableCell className="font-medium text-lg">{index + 1}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div>
-                            <p className="font-semibold">{user.name}</p>
-                            <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                <span>Teaches</span> <Badge variant="secondary">{teaches}</Badge>
-                                <span>Wants</span> <Badge variant="outline">{wants}</Badge>
-                            </div>
-                        </div>
+                        <span className="font-medium">{user.name}</span>
                       </div>
-                      <Button variant="ghost">
-                          Connect <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                  </div>
-              ))}
-           </div>
-        </CardContent>
-      </Card>
+                    </TableCell>
+                    <TableCell className="text-right font-bold text-primary">{user.points}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
