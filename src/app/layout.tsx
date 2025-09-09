@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Thunder Learner',
+  title: 'SkillSwap Connect',
   description: 'A community-driven platform for local skill sharing.',
 };
 

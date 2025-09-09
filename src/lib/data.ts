@@ -25,10 +25,10 @@ export const users: User[] = [
   {
     id: 1,
     name: 'Jit Saha',
-    email: 'alice@example.com',
+    email: 'jit@example.com',
     location: { name: 'San Francisco, CA', lat: 37.7749, lng: -122.4194 },
     points: 150,
-    avatar: 'https://i.pravatar.cc/150?u=alice',
+    avatar: 'https://i.pravatar.cc/150?u=jit',
     skillsOffered: ['cooking', 'gardening'],
     skillsWanted: ['guitar', 'photography'],
     badges: ['first-session-learner', 'first-session-teacher', 'master-gardener'],
@@ -36,7 +36,7 @@ export const users: User[] = [
   {
     id: 2,
     name: 'Utsav Saha',
-    email: 'bob@example.com',
+    email: 'utsav@example.com',
     location: { name: 'Oakland, CA', lat: 37.8044, lng: -122.2712 },
     points: 80,
     avatar: 'https://i.pravatar.cc/150?u=utsav',
@@ -47,7 +47,7 @@ export const users: User[] = [
   {
     id: 3,
     name: 'Soumyojeet Dutta',
-    email: 'charlie@example.com',
+    email: 'soumyojeet@example.com',
     location: { name: 'Berkeley, CA', lat: 37.8715, lng: -122.2730 },
     points: 200,
     avatar: 'https://i.pravatar.cc/150?u=soumyojeet',
