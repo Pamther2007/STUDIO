@@ -71,26 +71,26 @@ export default function DashboardPage() {
       </div>
 
       {nextSession && (
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-primary/10 border-primary/20">
            <CardHeader>
-                <CardTitle className="text-blue-900">Your Next Session is Coming Up!</CardTitle>
+                <CardTitle className="text-primary">Your Next Session is Coming Up!</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-6">
-                <div className="flex flex-col items-center justify-center bg-blue-100 p-4 rounded-lg">
-                    <span className="text-3xl font-bold text-blue-800">{format(new Date(nextSession.date), "d")}</span>
-                    <span className="text-sm font-medium text-blue-700">{format(new Date(nextSession.date), "MMM")}</span>
+                <div className="flex flex-col items-center justify-center bg-primary/20 p-4 rounded-lg">
+                    <span className="text-3xl font-bold text-primary">{format(new Date(nextSession.date), "d")}</span>
+                    <span className="text-sm font-medium text-primary/80">{format(new Date(nextSession.date), "MMM")}</span>
                 </div>
                 <div className="flex-1">
-                    <p className="font-bold text-lg text-blue-900">
+                    <p className="font-bold text-lg text-foreground">
                         {skills.find(s => s.id === nextSession.skillId)?.name}
                     </p>
-                    <p className="text-sm text-blue-800">
+                    <p className="text-sm text-muted-foreground">
                         {nextSession.teacherId === currentUser.id ? 
                         `You are teaching ${users.find(u => u.id === nextSession.learnerId)?.name}` :
                         `You are learning from ${users.find(u => u.id === nextSession.teacherId)?.name}`
                         }
                     </p>
-                    <p className="text-sm text-blue-700 flex items-center gap-1 mt-1">
+                    <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                         <Clock className="h-4 w-4" />
                         {format(new Date(nextSession.date), "eeee, h:mm a")} ({formatDistanceToNow(new Date(nextSession.date), { addSuffix: true })})
                     </p>
@@ -230,7 +230,7 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium">{reviewer.name} reviewed you</p>
                             <div className="flex items-center">
                                 {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`h-4 w-4 ${i < review.stars ? 'text-primary fill-current' : 'text-muted-foreground'}`} />
+                                    <Star key={i} className={`h-4 w-4 ${i < review.stars ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} />
                                 ))}
                             </div>
                             <blockquote className="mt-2 border-l-2 pl-3 text-sm italic text-muted-foreground">
