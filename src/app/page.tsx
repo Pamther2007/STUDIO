@@ -45,9 +45,14 @@ export default function LandingPage() {
           <Logo />
           <h1 className="text-2xl font-bold text-foreground">SkillSwap Connect</h1>
         </div>
-        <Button asChild>
-          <Link href="/dashboard">Get Started</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/login">Log In</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/signup">Sign Up</Link>
+          </Button>
+        </div>
       </header>
 
       <main className="flex-grow">
