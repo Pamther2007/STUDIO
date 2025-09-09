@@ -26,6 +26,7 @@ import {
   Award,
   MessageSquare,
   Trophy,
+  Mail,
 } from 'lucide-react';
 import Logo from './logo';
 import { getCurrentUser } from '@/lib/data';
@@ -38,6 +39,7 @@ const navItems = [
   { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/map', icon: MapPin, label: 'Map' },
   { href: '/ai-matcher', icon: Bot, label: 'AI Matcher' },
+  { href: '/contact-us', icon: Mail, label: 'Contact Us' },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
