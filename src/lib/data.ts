@@ -61,7 +61,7 @@ export const users: User[] = [
     email: 'pritam@example.com',
     location: { name: 'San Mateo, CA', lat: 37.5630, lng: -122.3255 },
     points: 120,
-    avatar: 'https://i.pravatar.cc/150?u=pritam-singh',
+    avatar:"C:\Users\ps879\OneDrive\Desktop\my website\Pritam Singh.jfif",
     skillsOffered: ['yoga', 'painting'],
     skillsWanted: ['gardening'],
     badges: ['first-session-learner', 'top-teacher'],
@@ -222,3 +222,7 @@ export const getMessages = (conversationId: number) => messages.filter(m => m.co
 
 // Helper to get current user (assuming user with id 1 is logged in)
 export const getCurrentUser = () => users.find(u => u.id === 1) as User;
+
+function newFunction(): string {
+  return 'https://i.pravatar.cc/150?u=pritam-singh';
+}

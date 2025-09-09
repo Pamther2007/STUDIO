@@ -36,7 +36,6 @@ const navItems = [
   { href: '/matches', icon: Users, label: 'Matches' },
   { href: '/sessions', icon: Calendar, label: 'Sessions' },
   { href: '/messages', icon: MessageSquare, label: 'Messages' },
-  { href: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/map', icon: MapPin, label: 'Map' },
   { href: '/ai-matcher', icon: Bot, label: 'AI Matcher' },
   { href: '/contact-us', icon: Mail, label: 'Contact Us' },
