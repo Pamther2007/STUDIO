@@ -15,127 +15,84 @@ import {
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { users, skills, sessions, reviews } from '@/lib/data';
-import { Crown, Star, Trophy } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+import { getCurrentUser, users, skills } from '@/lib/data';
+import { ArrowRight, Users } from 'lucide-react';
+import type { User } from '@/lib/types';
+import { Button } from '@/components/ui/button';
 
-export default function LeaderboardPage() {
-  const topLearners = [...users].sort((a, b) => b.points - a.points).slice(0, 5);
+export default function MatchesPage() {
+  const currentUser = getCurrentUser();
 
-  const getCompletedSessions = (userId: number) => {
-    return sessions.filter(
-      (s) => (s.learnerId === userId || s.teacherId === userId) && s.status === 'completed'
-    ).length;
-  };
-  
-  const getAverageRating = (userId: number) => {
-    const userReviews = reviews.filter(r => r.revieweeId === userId);
-    if (userReviews.length === 0) return 0;
-    const totalStars = userReviews.reduce((acc, r) => acc + r.stars, 0);
-    return (totalStars / userReviews.length);
-  }
+  const getSkillName = (skillId: string) => skills.find(s => s.id === skillId)?.name || 'Unknown Skill';
+  const getSkillId = (skillName: string) => skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())?.id;
 
-  const topRated = [...users].map(user => ({
-    ...user,
-    avgRating: getAverageRating(user.id),
-    reviewCount: reviews.filter(r => r.revieweeId === user.id).length
-  })).sort((a, b) => b.avgRating - a.avgRating).slice(0, 5);
+  const matches: { user: User, matchReason: string, teaches: string, wants: string }[] = users
+    .filter(user => user.id !== currentUser.id)
+    .map(user => {
+      const offeredByThem = user.skillsOffered.filter(skillId => currentUser.skillsWanted.includes(skillId));
+      const wantedByThem = user.skillsWanted.filter(skillId => currentUser.skillsOffered.includes(skillId));
+      
+      if (offeredByThem.length > 0) {
+        return { 
+            user, 
+            matchReason: `Offers ${getSkillName(offeredByThem[0])}`,
+            teaches: getSkillName(offeredByThem[0]),
+            wants: getSkillName(user.skillsWanted[0])
+        };
+      }
+      if (wantedByThem.length > 0) {
+        return { 
+            user, 
+            matchReason: `Wants ${getSkillName(wantedByThem[0])}`,
+            teaches: getSkillName(user.skillsOffered[0]),
+            wants: getSkillName(wantedByThem[0])
+        };
+      }
+      return null;
+    })
+    .filter((match): match is { user: User, matchReason: string, teaches: string, wants: string } => match !== null);
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Leaderboard</h2>
-      </div>
-      <p className="text-muted-foreground">
-        See who is leading the SkillSwap community.
-      </p>
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
+        <h2 className="text-3xl font-bold tracking-tight">Welcome Back!</h2>
+        <p className="text-muted-foreground">
+            Here's your learning and teaching snapshot for this month.
+        </p>
+
+      <Card>
+        <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Trophy className="text-primary" /> Top Learners
+              <Users className="text-primary" /> Your Skill Matches
             </CardTitle>
             <CardDescription>
-              Users who have earned the most points.
+              Connect with users based on your skills and location.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[80px]">Rank</TableHead>
-                  <TableHead>User</TableHead>
-                  <TableHead className="text-right">Points</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {topLearners.map((user, index) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">#{index + 1}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>
-                            {user.name.charAt(0)}
-                          </AvatarFallback>
+        <CardContent>
+           <div className="space-y-4">
+              {matches.slice(0,3).map(({ user, teaches, wants }) => (
+                  <div key={user.id} className="flex items-center justify-between p-4 rounded-lg border">
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-12 w-12">
+                            <AvatarImage src={user.avatar} alt={user.name} />
+                            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <span>{user.name}</span>
-                        {index === 0 && <Crown className="w-5 h-5 text-yellow-500" />}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right font-bold">{user.points}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Star className="text-primary" /> Top Rated
-            </CardTitle>
-            <CardDescription>
-              Users with the highest average review ratings.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-             <Table>
-              <TableHeader>
-                <TableRow>
-                   <TableHead>User</TableHead>
-                  <TableHead className="text-right">Rating</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {topRated.filter(u => u.reviewCount > 0).map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>
-                            {user.name.charAt(0)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span>{user.name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                            <span className="font-bold">{user.avgRating.toFixed(1)}</span>
-                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                            <span className="text-xs text-muted-foreground">({user.reviewCount})</span>
+                        <div>
+                            <p className="font-semibold">{user.name}</p>
+                            <div className="text-sm text-muted-foreground flex items-center gap-2">
+                                <span>Teaches</span> <Badge variant="secondary">{teaches}</Badge>
+                                <span>Wants</span> <Badge variant="outline">{wants}</Badge>
+                            </div>
                         </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+                      </div>
+                      <Button variant="ghost">
+                          Connect <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                  </div>
+              ))}
+           </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
