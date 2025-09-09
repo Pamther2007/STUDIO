@@ -14,14 +14,15 @@ import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 
 export default function LeaderboardPage() {
   const getLeaderboardData = () => {
+    const now = new Date();
+    const monthStart = startOfMonth(now);
+    const monthEnd = endOfMonth(now);
+    const allSessions = sessions.filter(s => s.status === 'completed');
+
     const userStats = users.map(user => {
-      const allSessions = sessions.filter(s => s.status === 'completed');
       const taughtSessions = allSessions.filter(s => s.teacherId === user.id).length;
       const learnedSessions = allSessions.filter(s => s.learnerId === user.id).length;
       
-      const now = new Date();
-      const monthStart = startOfMonth(now);
-      const monthEnd = endOfMonth(now);
       const monthlyLearnedSessions = allSessions.filter(s => 
         s.learnerId === user.id && 
         isWithinInterval(new Date(s.date), { start: monthStart, end: monthEnd })
@@ -42,8 +43,19 @@ export default function LeaderboardPage() {
 
     const topTeachers = [...userStats].sort((a, b) => b.taughtSessions - a.taughtSessions).slice(0, 5);
     const topLearners = [...userStats].sort((a, b) => b.learnedSessions - a.learnedSessions).slice(0, 5);
-    const topMonthlyLearners = [...userStats].sort((a, b) => b.monthlyLearnedSessions - a.monthlyLearnedSessions).slice(0, 5);
-    const topRated = [...userStats].filter(u => u.reviewCount > 0).sort((a, b) => b.avgRating - a.avgRating).slice(0, 5);
+    const topMonthlyLearners = [...userStats]
+        .filter(u => u.monthlyLearnedSessions > 0)
+        .sort((a, b) => b.monthlyLearnedSessions - a.monthlyLearnedSessions)
+        .slice(0, 5);
+    const topRated = [...userStats]
+        .filter(u => u.reviewCount > 0)
+        .sort((a, b) => {
+            if (b.avgRating !== a.avgRating) {
+                return b.avgRating - a.avgRating;
+            }
+            return b.reviewCount - a.reviewCount;
+        })
+        .slice(0, 5);
 
     return { topTeachers, topLearners, topMonthlyLearners, topRated };
   };
@@ -98,31 +110,7 @@ export default function LeaderboardPage() {
             <LeaderboardList users={topTeachers} stat="taughtSessions" statLabel="sessions" />
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BookOpen className="text-primary" /> Top Learners (All Time)
-            </CardTitle>
-            <CardDescription>Most sessions learned.</CardDescription>
-          </CardHeader>
-          <CardContent>
-             <LeaderboardList users={topLearners} stat="learnedSessions" statLabel="sessions" />
-          </CardContent>
-        </Card>
         
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="text-primary" /> Top Learners (This Month)
-            </CardTitle>
-            <CardDescription>Most sessions learned this month.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LeaderboardList users={topMonthlyLearners} stat="monthlyLearnedSessions" statLabel="sessions" />
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -152,6 +140,35 @@ export default function LeaderboardPage() {
             </ul>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="text-primary" /> Top Learners (This Month)
+            </CardTitle>
+            <CardDescription>Most sessions learned this month.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {topMonthlyLearners.length > 0 ? (
+                <LeaderboardList users={topMonthlyLearners} stat="monthlyLearnedSessions" statLabel="sessions" />
+            ) : (
+                <p className="text-center text-muted-foreground py-8">No monthly learners yet. Be the first!</p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BookOpen className="text-primary" /> Top Learners (All Time)
+            </CardTitle>
+            <CardDescription>Most sessions learned.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <LeaderboardList users={topLearners} stat="learnedSessions" statLabel="sessions" />
+          </CardContent>
+        </Card>
+
       </div>
     </div>
   );

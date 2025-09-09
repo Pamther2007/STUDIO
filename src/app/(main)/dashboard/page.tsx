@@ -54,12 +54,18 @@ export default function DashboardPage() {
     !c.lastMessage.read
   ).length;
   
-  const completedSessions = sessions.filter(s => 
-      (s.learnerId === currentUser.id || s.teacherId === currentUser.id) && s.status === 'completed'
+  const now = new Date();
+  const monthStart = startOfMonth(now);
+  const monthEnd = endOfMonth(now);
+  const completedSessionsThisMonth = sessions.filter(s => 
+      (s.learnerId === currentUser.id || s.teacherId === currentUser.id) && 
+      s.status === 'completed' &&
+      isWithinInterval(new Date(s.date), { start: monthStart, end: monthEnd })
     ).length;
 
-  const weeklyGoal = 5;
-  const weeklyProgress = (completedSessions / weeklyGoal) * 100;
+  const monthlyGoal = 10;
+  const monthlyProgress = (completedSessionsThisMonth / monthlyGoal) * 100;
+  const allCompletedSessions = sessions.filter(s => (s.learnerId === currentUser.id || s.teacherId === currentUser.id) && s.status === 'completed').length;
 
 
   return (
@@ -139,7 +145,7 @@ export default function DashboardPage() {
             <Handshake className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{completedSessions}</div>
+            <div className="text-2xl font-bold">{allCompletedSessions}</div>
             <p className="text-xs text-muted-foreground">
               Across all your skills
             </p>
@@ -151,11 +157,11 @@ export default function DashboardPage() {
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{completedSessions}/{weeklyGoal}</div>
+            <div className="text-2xl font-bold">{completedSessionsThisMonth}/{monthlyGoal}</div>
              <p className="text-xs text-muted-foreground mb-2">
-              Sessions this week
+              Sessions this month
             </p>
-            <Progress value={weeklyProgress} className="h-2" />
+            <Progress value={monthlyProgress} className="h-2" />
           </CardContent>
         </Card>
       </div>
