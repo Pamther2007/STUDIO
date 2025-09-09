@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { SendHorizonal, ArrowLeft } from 'lucide-react';
+import { SendHorizonal, ArrowLeft, MessageSquare } from 'lucide-react';
 import { format, formatDistanceToNowStrict } from 'date-fns';
 
 function ConversationList({
