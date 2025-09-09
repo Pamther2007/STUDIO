@@ -15,6 +15,7 @@ import {
   Clock,
   Flame,
   Target,
+  Star,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, users, sessions, skills, reviews, conversations } from '@/lib/data';
